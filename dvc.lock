@@ -10,23 +10,23 @@ stages:
     params:
       params.yaml:
         data.random_state: 42
-        data.test_size: 0.25
+        data.test_size: 0.15
     outs:
     - path: data/test.csv
       hash: md5
-      md5: 62b1dfdf65e61fce1e5f3e16899d0f08
-      size: 3263
+      md5: 135ae80a7ed51e89383a39bc3f71cd66
+      size: 2031
     - path: data/train.csv
       hash: md5
-      md5: cebc59c71487512618bb8167ff6a4045
-      size: 9355
+      md5: e3bbc6dbce0ec7300f780fc2c1862158
+      size: 10587
   train:
     cmd: python src/train.py
     deps:
     - path: data/train.csv
       hash: md5
-      md5: cebc59c71487512618bb8167ff6a4045
-      size: 9355
+      md5: e3bbc6dbce0ec7300f780fc2c1862158
+      size: 10587
     - path: src/train.py
       hash: md5
       md5: db6f7a80cd2a04120fc0c8bb9c046d18
@@ -34,40 +34,38 @@ stages:
     params:
       params.yaml:
         model.params:
-          n_estimators: 100
-          max_depth: 10
-          min_samples_split: 3
-        model.type: random_forest
+          C: 1.0
+          kernel: rbf
+        model.type: svm
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 3128aeb3058f046fa6da41daa57bcc66
-      size: 179616
+      md5: 07abdea7edb4082e691269268ed4e1df
+      size: 13734
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: data/test.csv
       hash: md5
-      md5: 62b1dfdf65e61fce1e5f3e16899d0f08
-      size: 3263
+      md5: 135ae80a7ed51e89383a39bc3f71cd66
+      size: 2031
     - path: models/model.pkl
       hash: md5
-      md5: 3128aeb3058f046fa6da41daa57bcc66
-      size: 179616
+      md5: 07abdea7edb4082e691269268ed4e1df
+      size: 13734
     - path: src/evaluate.py
       hash: md5
       md5: f78f5a8f57c6b57868dcf678c990de07
       size: 2557
     params:
       params.yaml:
-        data.test_size: 0.25
+        data.test_size: 0.15
         model.params:
-          n_estimators: 100
-          max_depth: 10
-          min_samples_split: 3
-        model.type: random_forest
+          C: 1.0
+          kernel: rbf
+        model.type: svm
     outs:
     - path: metrics/scores.json
       hash: md5
-      md5: 6487c366c9e2f7209353edda321dbcbb
-      size: 82
+      md5: 2727631b1d7c19d946a477a361f903d2
+      size: 94
