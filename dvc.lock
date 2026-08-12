@@ -1,0 +1,71 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare_data.py
+    deps:
+    - path: src/prepare_data.py
+      hash: md5
+      md5: 47b347a98df575e2ec74480929e27ab3
+      size: 744
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.test_size: 0.3
+    outs:
+    - path: data/test.csv
+      hash: md5
+      md5: d86bc5c11880bbdb5854b45147e8e60e
+      size: 3881
+    - path: data/train.csv
+      hash: md5
+      md5: 59d6c2fd714f7791633f7c360334aa14
+      size: 8737
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/train.csv
+      hash: md5
+      md5: 59d6c2fd714f7791633f7c360334aa14
+      size: 8737
+    - path: src/train.py
+      hash: md5
+      md5: 88be59532e8e16f203ea467d3ad2e6c9
+      size: 1215
+    params:
+      params.yaml:
+        model.params:
+          max_iter: 200
+          C: 1.0
+        model.type: logistic_regression
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 08caaaf197cb2f8a390a0ca65f924204
+      size: 1341
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/test.csv
+      hash: md5
+      md5: d86bc5c11880bbdb5854b45147e8e60e
+      size: 3881
+    - path: models/model.pkl
+      hash: md5
+      md5: 08caaaf197cb2f8a390a0ca65f924204
+      size: 1341
+    - path: src/evaluate.py
+      hash: md5
+      md5: da940ab1c6ad62be9f11eea10e2d7325
+      size: 2033
+    params:
+      params.yaml:
+        data.test_size: 0.3
+        model.params:
+          max_iter: 200
+          C: 1.0
+        model.type: logistic_regression
+    outs:
+    - path: metrics/scores.json
+      hash: md5
+      md5: acced37334221d0f00fe2bfa8511fde3
+      size: 94

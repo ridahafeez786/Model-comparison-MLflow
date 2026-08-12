@@ -1,0 +1,36 @@
+stages:
+  prepare:
+    cmd: python src/prepare_data.py
+    deps:
+      - src/prepare_data.py
+    params:
+      - data.test_size
+      - data.random_state
+    outs:
+      - data/train.csv
+      - data/test.csv
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/train.csv
+    params:
+      - model.type
+      - model.params
+    outs:
+      - models/model.pkl
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - data/test.csv
+      - models/model.pkl
+    params:
+      - model.type
+      - model.params
+      - data.test_size
+    metrics:
+      - metrics/scores.json:
+          cache: false
