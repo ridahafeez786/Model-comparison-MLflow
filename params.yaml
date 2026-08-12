@@ -1,9 +1,9 @@
-data:
-  test_size: 0.2
-  random_state: 42
-
+ata:
+ test_size: 0.25
+ random_state: 42
 model:
-  type: "decision_tree"
-  params:
-    max_depth: 5
-    min_samples_split: 4
+ type: "random_forest"
+ params:
+ n_estimators: 100
+ max_depth: 10
+ min_samples_split: 3
