@@ -5,67 +5,67 @@ stages:
     deps:
     - path: src/prepare_data.py
       hash: md5
-      md5: 47b347a98df575e2ec74480929e27ab3
-      size: 744
+      md5: 96a3f936b6569da264acbbbecded178b
+      size: 908
     params:
       params.yaml:
         data.random_state: 42
-        data.test_size: 0.3
+        data.test_size: 0.2
     outs:
     - path: data/test.csv
       hash: md5
-      md5: d86bc5c11880bbdb5854b45147e8e60e
-      size: 3881
+      md5: 7cec6d7b1dfbcd48ddada021fc1ecd9d
+      size: 2651
     - path: data/train.csv
       hash: md5
-      md5: 59d6c2fd714f7791633f7c360334aa14
-      size: 8737
+      md5: d20652ef9602c0b58271e8247e8a2d78
+      size: 9967
   train:
     cmd: python src/train.py
     deps:
     - path: data/train.csv
       hash: md5
-      md5: 59d6c2fd714f7791633f7c360334aa14
-      size: 8737
+      md5: d20652ef9602c0b58271e8247e8a2d78
+      size: 9967
     - path: src/train.py
       hash: md5
-      md5: 88be59532e8e16f203ea467d3ad2e6c9
-      size: 1215
+      md5: db6f7a80cd2a04120fc0c8bb9c046d18
+      size: 1398
     params:
       params.yaml:
         model.params:
-          max_iter: 200
-          C: 1.0
-        model.type: logistic_regression
+          max_depth: 5
+          min_samples_split: 4
+        model.type: decision_tree
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 08caaaf197cb2f8a390a0ca65f924204
-      size: 1341
+      md5: 431f9908c55377ec11d43615e7497117
+      size: 2555
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: data/test.csv
       hash: md5
-      md5: d86bc5c11880bbdb5854b45147e8e60e
-      size: 3881
+      md5: 7cec6d7b1dfbcd48ddada021fc1ecd9d
+      size: 2651
     - path: models/model.pkl
       hash: md5
-      md5: 08caaaf197cb2f8a390a0ca65f924204
-      size: 1341
+      md5: 431f9908c55377ec11d43615e7497117
+      size: 2555
     - path: src/evaluate.py
       hash: md5
-      md5: da940ab1c6ad62be9f11eea10e2d7325
-      size: 2033
+      md5: f78f5a8f57c6b57868dcf678c990de07
+      size: 2557
     params:
       params.yaml:
-        data.test_size: 0.3
+        data.test_size: 0.2
         model.params:
-          max_iter: 200
-          C: 1.0
-        model.type: logistic_regression
+          max_depth: 5
+          min_samples_split: 4
+        model.type: decision_tree
     outs:
     - path: metrics/scores.json
       hash: md5
-      md5: acced37334221d0f00fe2bfa8511fde3
-      size: 94
+      md5: 949909f2b267e2285df0d148ee1b4b44
+      size: 93
