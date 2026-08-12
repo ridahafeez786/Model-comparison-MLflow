@@ -10,23 +10,23 @@ stages:
     params:
       params.yaml:
         data.random_state: 42
-        data.test_size: 0.2
+        data.test_size: 0.25
     outs:
     - path: data/test.csv
       hash: md5
-      md5: 7cec6d7b1dfbcd48ddada021fc1ecd9d
-      size: 2651
+      md5: 62b1dfdf65e61fce1e5f3e16899d0f08
+      size: 3263
     - path: data/train.csv
       hash: md5
-      md5: d20652ef9602c0b58271e8247e8a2d78
-      size: 9967
+      md5: cebc59c71487512618bb8167ff6a4045
+      size: 9355
   train:
     cmd: python src/train.py
     deps:
     - path: data/train.csv
       hash: md5
-      md5: d20652ef9602c0b58271e8247e8a2d78
-      size: 9967
+      md5: cebc59c71487512618bb8167ff6a4045
+      size: 9355
     - path: src/train.py
       hash: md5
       md5: db6f7a80cd2a04120fc0c8bb9c046d18
@@ -34,38 +34,40 @@ stages:
     params:
       params.yaml:
         model.params:
-          max_depth: 5
-          min_samples_split: 4
-        model.type: decision_tree
+          n_estimators: 100
+          max_depth: 10
+          min_samples_split: 3
+        model.type: random_forest
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 431f9908c55377ec11d43615e7497117
-      size: 2555
+      md5: 3128aeb3058f046fa6da41daa57bcc66
+      size: 179616
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: data/test.csv
       hash: md5
-      md5: 7cec6d7b1dfbcd48ddada021fc1ecd9d
-      size: 2651
+      md5: 62b1dfdf65e61fce1e5f3e16899d0f08
+      size: 3263
     - path: models/model.pkl
       hash: md5
-      md5: 431f9908c55377ec11d43615e7497117
-      size: 2555
+      md5: 3128aeb3058f046fa6da41daa57bcc66
+      size: 179616
     - path: src/evaluate.py
       hash: md5
       md5: f78f5a8f57c6b57868dcf678c990de07
       size: 2557
     params:
       params.yaml:
-        data.test_size: 0.2
+        data.test_size: 0.25
         model.params:
-          max_depth: 5
-          min_samples_split: 4
-        model.type: decision_tree
+          n_estimators: 100
+          max_depth: 10
+          min_samples_split: 3
+        model.type: random_forest
     outs:
     - path: metrics/scores.json
       hash: md5
-      md5: 949909f2b267e2285df0d148ee1b4b44
-      size: 93
+      md5: 6487c366c9e2f7209353edda321dbcbb
+      size: 82
